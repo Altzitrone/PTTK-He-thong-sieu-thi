@@ -1,0 +1,19 @@
+<%@ page pageEncoding="UTF-8" %>
+<div class="table-responsive">
+    <table class="table align-middle">
+        <thead><tr><th scope="col">Mặt hàng</th><th scope="col" class="text-end">Số lượng</th>
+            <th scope="col" class="text-end">Đơn giá</th><th scope="col" class="text-end">Thành tiền</th></tr></thead>
+        <tbody>
+        <c:forEach items="${order.details}" var="line">
+            <tr>
+                <td><c:out value="${line.item.itemName}"/></td>
+                <td class="text-end"><c:out value="${line.quantity}"/></td>
+                <td class="text-end"><fmt:formatNumber value="${line.unitPrice}" maxFractionDigits="2"/> ₫</td>
+                <td class="text-end"><fmt:formatNumber value="${line.lineTotal}" maxFractionDigits="2"/> ₫</td>
+            </tr>
+        </c:forEach>
+        </tbody>
+        <tfoot><tr><th scope="row" colspan="3" class="text-end">Tổng tiền</th>
+            <td class="text-end fw-semibold"><fmt:formatNumber value="${order.totalAmount}" maxFractionDigits="2"/> ₫</td></tr></tfoot>
+    </table>
+</div>

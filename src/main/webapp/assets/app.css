@@ -1,0 +1,78 @@
+body {
+    background-color: #f4f7fa;
+    color: #172b3a;
+}
+
+.app-header {
+    background-color: #18374b;
+    color: #fff;
+}
+
+.page-shell {
+    max-width: 960px;
+    padding-top: 2.5rem;
+    padding-bottom: 3rem;
+}
+
+.login-panel {
+    max-width: 440px;
+}
+
+.home-page {
+    background-color: #fff;
+}
+
+.home-menu {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+    text-align: center;
+}
+
+.home-menu h1 {
+    margin-bottom: 5rem;
+    font-size: clamp(1.6rem, 4vw, 2rem);
+    font-weight: 700;
+}
+
+.home-action {
+    display: inline-block;
+    padding: 0.5rem 1.25rem;
+    border: 2px solid #18374b;
+    color: inherit;
+    font-size: 1.125rem;
+    text-decoration: none;
+}
+
+.home-action:hover,
+.home-action:focus-visible {
+    background-color: #eef4f8;
+    color: #18374b;
+}
+
+.eyebrow {
+    color: #34566b;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.search-field {
+    max-width: 32rem;
+}
+
+.preserve-lines {
+    white-space: pre-line;
+}
+
+.signature-area {
+    padding-top: 1rem;
+    padding-bottom: 4rem;
+}
+
+@media print {
+    body { background-color: #fff; }
+    .d-print-none { display: none !important; }
+    .page-shell { max-width: none; padding: 0; }
+    .invoice-panel { border: 0; }
+    tr { break-inside: avoid; }
+}

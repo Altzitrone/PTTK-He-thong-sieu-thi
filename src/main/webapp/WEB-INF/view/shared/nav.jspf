@@ -1,0 +1,12 @@
+<%@ page pageEncoding="UTF-8" %>
+<header class="app-header d-print-none">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3 py-3">
+        <c:url var="homeUrl" value="${sessionScope.role eq 'WAREHOUSE' ? '/warehouse/home' : '/customer/home'}"/>
+        <a class="fw-semibold text-white text-decoration-none" href="<c:out value='${homeUrl}'/>">Quản lý siêu thị</a>
+        <form action="<c:url value='/logout'/>" method="post" class="d-flex flex-wrap align-items-center gap-3">
+            <span><c:out value="${sessionScope.fullName}"/></span>
+            <input type="hidden" name="csrfToken" value="<c:out value='${sessionScope.csrfToken}'/>">
+            <button class="btn btn-outline-light btn-sm" type="submit">Đăng xuất</button>
+        </form>
+    </div>
+</header>

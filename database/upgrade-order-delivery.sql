@@ -1,0 +1,12 @@
+USE supermarket6;
+SET NAMES utf8mb4;
+SET @old_check = (SELECT tc.CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS AS tc JOIN information_schema.CHECK_CONSTRAINTS AS cc ON cc.CONSTRAINT_SCHEMA = tc.CONSTRAINT_SCHEMA AND cc.CONSTRAINT_NAME = tc.CONSTRAINT_NAME WHERE tc.TABLE_SCHEMA = 'supermarket6' AND LOWER(tc.TABLE_NAME) = 'tblonlineorder6' AND tc.CONSTRAINT_TYPE = 'CHECK' AND LOWER(cc.CHECK_CLAUSE) LIKE '%status%in%' AND tc.CONSTRAINT_NAME <> 'chk_online_order_delivery_status' LIMIT 1);
+SET @ddl = IF(@old_check IS NULL, 'DO 0', CONCAT('ALTER TABLE tblOnlineOrder6 DROP CHECK `', REPLACE(@old_check, '`', '``'), '`, ADD CONSTRAINT chk_online_order_delivery_status CHECK (status = ''Chưa xuất'' OR (status IN (''Đã xuất'', ''Đã giao'') AND warehouseStaffId IS NOT NULL))'));
+PREPARE delivery_upgrade FROM @ddl;
+EXECUTE delivery_upgrade;
+DEALLOCATE PREPARE delivery_upgrade;
+START TRANSACTION;
+INSERT INTO tblMember6 (username, passwordHash, fullName, role) SELECT demo.username, CONCAT(HEX(RANDOM_BYTES(16)), ':', HEX(RANDOM_BYTES(32))), demo.fullName, 'DELIVERY' FROM (VALUES ROW('demo_courier_3', 'Nguyễn Thanh Tùng'), ROW('demo_courier_4', 'Lê Hải Yến'), ROW('demo_courier_5', 'Phạm Tuấn Kiệt'), ROW('demo_courier_6', 'Trần Mỹ Duyên')) AS demo(username, fullName) WHERE NOT EXISTS (SELECT 1 FROM tblMember6 AS m WHERE m.username = demo.username);
+INSERT INTO tblStaff6 (id, workShift) SELECT m.id, 'Ca sáng' FROM tblMember6 AS m WHERE m.username IN ('demo_courier_3', 'demo_courier_4', 'demo_courier_5', 'demo_courier_6') AND NOT EXISTS (SELECT 1 FROM tblStaff6 AS s WHERE s.id = m.id);
+INSERT INTO tblDeliveryStaff6 (id, workStatus) SELECT m.id, 'Đang rảnh' FROM tblMember6 AS m WHERE m.username IN ('demo_courier_3', 'demo_courier_4', 'demo_courier_5', 'demo_courier_6') AND NOT EXISTS (SELECT 1 FROM tblDeliveryStaff6 AS d WHERE d.id = m.id);
+COMMIT;
